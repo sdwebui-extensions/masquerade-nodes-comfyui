@@ -8,6 +8,7 @@ import torchvision.transforms.functional as TF
 import torch.nn.functional as torchfn
 import subprocess
 import sys
+from comfy.cli_args import args
 
 DELIMITER = '|'
 cached_clipseg_model = None
@@ -199,6 +200,10 @@ class ClipSegNode:
 
     def download_and_cache(self, cache_name, url):
         cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'download_cache')
+        if args.data_dir:
+            cache_dir = os.path.join(args.data_dir, 'models/download_cache')
+            if args.just_ui:
+                cache_dir = os.path.join(os.path.dirname(args.data_dir), 'models/download_cache')
         os.makedirs(cache_dir, exist_ok=True)
 
         file_name = os.path.join(cache_dir, cache_name)
